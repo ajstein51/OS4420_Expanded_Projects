@@ -1,0 +1,223 @@
+#################################### Monday, Oct 4th ################################################
+- For the new tokens these are gonna be what cmd can be. 
+    Ex: a line can be a cmd and a for or something like that
+
+- make 'varname=value(some form)' make this a token exactly like this 
+
+- if user types CD check for the path (WORD or an arg?) if there is not path then go to home directory
+
+- if debug is not set to NULL then its on
+
+- screen io like printf, dont wanna support those having a new line character cause itll mess things up use 
+    fflush for something
+
+- 200 arguments/pathways is too much error out
+
+- dup and dup2 will be for input/output, chdir will be passed a pathway will be saying yes or no. If it says no.
+    then perror it out.
+
+- do number 1 before next class in the hint section, this will need fork for something 
+
+- use path: take the path divide it up by the : 
+
+- only command we are gonna be writing is cd everything else already exists
+    For CD we gonna check if its there and if it is then we do it by hand otherwise use base stuff
+
+- When we split up the original pathway do that in a copy of the string rather than the OG one
+
+
+#################################### Wednesday, Oct 8th ################################################
+- Test Questions
+    - no multiple choice
+    - Short answer
+        - What is the name of the system call that creates a new process: fork
+        - Makes a new program and gets ride of the other question: exec
+        - what are the advantages/disadvantages of printf vs a system call
+    - Pieces of code to write (mostly code from the projects and the small in class programs)
+        - code for redirection 
+        - concepts from the unique program
+        - first part of the shell1
+            - maybe some of the easier stuff from the shell2
+    - Slides concepts
+
+- Question on pathing and prompts
+    - make changes to the path and prompt then kill the shell will those changes stay or be wiped?
+
+
+#################################### Monday, Oct 11th ################################################
+- get bin/ls working
+- heap: dynamically allocated mem
+- global vars are in the IDK
+- eventually gotta make the end of argv = NULL
+- args go into the stack
+
+Midterm Q?
+- 5 pages long
+    - 1: short answer
+    - 2: longer answer
+    - 3/4: Code kinda Questions
+    - 5: sythesis
+EX:
+    - what is a system call?
+        - Requests a service from the kernel of the operating system on which it is executed.
+        - A routine you can call from user space that asks the OS to do this that you cant do yourself. Often times the system calls are slow.
+    - Why are system calls slow?
+        - Because its an interrupt which are slow because it takes control away from the process in which it has to save/check and changes
+        all the register values
+    - 3 of the file descriptors by definition have special meanings. What are the meanings and what are their names
+        - STDIN, STDOUT, STDERR (0, 1, and 2)
+        - What do they do: 
+    - Why dont dynamically allocated structures go in the data section of the program
+        - Don't know how large they will be. 
+            Cause it is a set number when compiled (above data is heap which is dynamic mem (from new/malloc)
+            dunno how large that is.
+    - Code stuff:
+        - exec program from sample on this project 
+        - show the scanner rule to do a pipe or a number or a string with double quotes
+        - a valid parser rule for parsing a cmd with args (IE whats done in parser)
+    - (5th page) can you take things we talked about in class and combine them in 'interesting' ways
+        - why is the text section on OS programs read only 
+            - 
+
+    OTHER
+    - when in doubt: system calls are slow, stuff about speed, if its not those then prolly about security
+    - concept of the scanner or parser
+
+#################################### Wednesday, Oct 13th ################################################
+- PS1 for var prompt 
+- b4 yyparse is called print the prompt, then in doline after every cmd print the prompt again (printf("Shell2>> ")
+- fflush(stdout), do this b4 calling florks cause output will get weird
+
+Notes on regular expressions:
+    - The plus is for more than 1, . is for everything thats not a newline
+    - Make floating point numbers in a regular expressions  
+        [0-9]+ // this is for an int 
+        [0-9]+\.[0-9]+ // so its a int and a . and more ints
+    - Words
+        [a-z]+
+    - plural word
+        [a-z]+s 
+    - cs classes at OU
+        [CS][0-9][0-9][0-9][0-9]
+    - stuff between square brackets
+        \[ [^\[]* \]
+    - find words with at least 2 x's
+        'x*.x'
+    - words with no vowels in them
+        '^[^aeiouy]*$'
+
+Question once on a Midterm
+Write a simple YACC grammer to recognize a file containing one or more lines (each terminated by the terminal EOLN). Each line is an
+english phrase with the rules
+    - There are 3 nouns (people): terminals(tokens) HOSHI, TPOL and ARCHER
+    - There are 2 verbs: terminals LIKES and HATES (ignore conjugation!)
+    - There are 3 qualifiers: terminals HOT, COLD and SPICY
+    - There are 3 foods: terminals PIZZA, SALAD and GACH
+    - Sentences consist of a list of nouns (which may be reapeated) followed by a verb followed by an optional qualifer, followed by one food
+    - The list of people must be punctuated *exactly* as in the rules above, using the terminals AND and COMMA
+A valid file might contain:
+    ARCHER LIKES PIZZA
+    HOSHI AND TPOL LIKES COLD SALAD
+    ARCHER HATES SPICY GACH
+    HOSHI, ARCHER AND HOSHI LIKES HOT PIZZA
+
+ANSWER:
+    input lines;
+    lines : line lines | line;
+    line : sentence EOLN;
+
+    sentence : people verb optadj food
+    ;
+
+    // food is tokens (tokens are capital)
+    food : PIZZA
+    | SALAD
+    | GAGA
+    ;
+
+    optadj : HOT
+    | SPICY
+    | COLD
+    | 
+    ;
+
+    verb : LIKES 
+    | HATES
+    ;
+
+    people : person
+    | peoplelist AND person
+    ;
+    
+    peoplelist : person
+    | peoplelist AND COMMA peoplelist
+    ;
+
+    person : HOSHI
+    | TPAL
+    | ARCHER
+    ;
+    // this is BNF grammer
+
+
+for var expansion
+- if its in double quotes we check look for the $ and the search for stuff
+
+the addition and subtraction table is like $VAR%stuff or $VAR#stuff this will add or remove stuff
+
+On exam
+- PIPE redirection
+- FILE redirection
+- anything on uniq program
+- 3 types of seek 
+    - seek_set, seek_cur, seek_end
+    seek_set: seek to total amount of offset
+    seek_cur: seek to offset from the current pos
+    seek_end: seek backwards from the end of file (if offset is negative)
+- the exec's we should know 
+    - execv, and execl
+    execl: list out args (l for list)
+    execv: pass an array of points to strings (v for vec)
+- difference between exit and _exit()
+    exit() will fflush, and then do a call back routine
+    _exit() is a system call (really used for just fork) will just leave no warning
+
+#################################### Monday, Oct 18th ################################################
+Assigning vars
+    - In the form of VARNAME=WORD
+    - if we see a $ then everything after it is a var name, in scanner search for that? ^\$[a-zA-Z]
+
+    // in bash.h, also put extern struct var vars[]
+    // extern means that it exists but we arent declaring it in here
+    struct var{
+        char * varname, varvalue
+        bool expant
+    };
+    // in bash.c
+    struct var vars[MAXVARS]
+
+    - variable (assignments?) stuff will be easier to get in the scanner. We can take care of everything in the scanner
+        and not have to deal with it in the parser.
+        Variable expansion has to be done in the scanner as well, not in the parser
+
+    - meta cmd can be a for loop, while loop, something else. New cmd structure 
+
+#################################### Tuesday, Oct 20th ################################################
+- Loops
+    while a | b | echo foo | c
+        do cmdlist
+        done
+
+- Parser new rule for cmd list
+    cmdlist : cmd
+    | whileloop
+    | forloop
+
+- var sub is just a subroutine
+- var assignments
+    var lookup function
+    var init function
+    another var function that does something
+
+
+- should be at to do 5

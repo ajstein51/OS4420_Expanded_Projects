@@ -1,0 +1,10 @@
+
+assignments/.DS_Store
+.DS_Store
+*.o
+assignments/shell2/headstart/parser.tab.h
+assignments/shell2/headstart/parser.tab.c
+assignments/shell2/headstart/parser.output
+assignments/shell2/headstart/parser.h
+assignments/shell2/headstart/lex.yy.c
+assignments/shell2/headstart/bash
